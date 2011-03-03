@@ -23,20 +23,6 @@ class Game(object):
         self.surface = pygame.display.set_mode((800, 600))
         pygame.display.set_caption(self.config['caption'])
 
-        tiles_absolute = [
-                Tile((0,0)), Tile((16,16)), Tile((32, 32)),
-                Tile((-16, 16)), Tile((0, 32))
-        ]
-
-        tiles_relative = [
-                Tile(tc(0,0)), Tile(tc(1,0)), Tile(tc(2,0)), Tile(tc(-1,-1)),
-                Tile(tc(0,1)), Tile(tc(0, 2)), Tile(tc(1,1))
-        ]
-
-        tiles = []
-        for x in range(0, 19):
-          tiles.append(Tile(tc(x - 1, x)))
-
         while True:
             events = pygame.event.get()
             for event in events:
@@ -44,8 +30,6 @@ class Game(object):
                     return
 
             self.surface.fill(Color('#000000'))
-            for tile in tiles:
-                tile.render(self.surface)
 
             pygame.display.update()
             pygame.time.wait(25)
