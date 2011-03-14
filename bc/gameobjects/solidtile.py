@@ -3,8 +3,8 @@ __author__ = 'ikke'
 import pygame
 from pygame import locals
 
-class Tile(object):
-
+class SolidTile(object):
+    # pylint: disable-msg=E1121
     def __init__(self, coords, color=(255,255,255)):
         self.coords = coords
         self.tile = pygame.Surface((33,33))
