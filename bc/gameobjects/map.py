@@ -1,4 +1,5 @@
-from solidtile import SolidTile
+from tile import Tile
+from tilesurface import SolidTileSurface
 from bc.utils.coords import tile_coords
 import logging
 import pygame.surface
@@ -19,11 +20,11 @@ class Alternater(object):
         self.current = new_index % len(self.options)
         
 class Map(object):
-    colors = [(30,30,30), (255,255,255)]
+    tile_surfaces = [SolidTileSurface((30,30,30)), SolidTileSurface((255,255,255))]
     def __init__(self, width, height):
         self.tiles = []
         columns = Alternater(0, 1)
-        rows = Alternater(*self.colors)
+        rows = Alternater(*self.tile_surfaces)
 
         self.map = None
 
@@ -31,7 +32,7 @@ class Map(object):
             self.tiles.append([])
             rows.set(columns.get())
             for y in range(0, height):
-                self.tiles[x].append(SolidTile(tile_coords(x+12, y-12), rows.get()))
+                self.tiles[x].append(Tile(tile_coords(x+12, y-12), rows.get()))
 
     def render(self, screen, view):
         if self.map is None:
