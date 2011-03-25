@@ -3,6 +3,7 @@ import sys
 # pylint: disable-msg=W0401,W0614
 from pygame.locals import *
 # pylint: enable-msg=W0401,W0614
+import pygame.key
 import logging
 from bc.gameobjects.solidtile import SolidTile
 from bc.utils.coords import tile_coords as tc
@@ -37,17 +38,16 @@ class Game(object):
                 if event.type == QUIT or event.type == KEYUP and event.key == K_q:
                     return
 
-                if event.type == KEYUP:
-                    logger.debug("Key_Up event")
-                    if event.key == K_UP:
-                        y += 10
-                    if event.key == K_DOWN:
-                        y -= 10
+            keys = pygame.key.get_pressed()
+            if keys[K_UP]:
+                y += 10
+            if keys[K_DOWN]:
+                y -= 10
 
-                    if event.key == K_RIGHT:
-                        x -= 10
-                    if event.key == K_LEFT:
-                        x += 10
+            if keys[K_RIGHT]:
+                x -= 10
+            if keys[K_LEFT]:
+                x += 10
 
             self.surface.fill(Color('#000000'))
             gamemap.render(self.surface, (x, y, 800, 600))
