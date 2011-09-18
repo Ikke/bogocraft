@@ -1,46 +1,40 @@
-from tile import Tile
-from tilesurface import SolidTileSurface
-from bc.utils.coords import tile_coords
 import logging
 import pygame.surface
+from bc import graphics
+from bc.utils.alternator import Alternator
 
 logger = logging.getLogger('map')
 
-class Alternater(object):
-    def __init__(self, *kargs):
-        self.options = kargs
-        self.current = 0
-
-    def get(self):
-        index = self.current
-        self.current = (self.current + 1) % len(self.options)
-        return self.options[self.current]
-    
-    def set(self, new_index):
-        self.current = new_index % len(self.options)
-        
 class Map(object):
-    tile_surfaces = [SolidTileSurface((30,30,30)), SolidTileSurface((255,255,255))]
     def __init__(self, width, height):
         self.tiles = []
-        columns = Alternater(0, 1)
-        rows = Alternater(*self.tile_surfaces)
-
         self.map = None
+
+        alternator = Alternator(graphics.grass, graphics.dirt)
 
         for x in range(0, width):
             self.tiles.append([])
-            rows.set(columns.get())
             for y in range(0, height):
-                self.tiles[x].append(Tile(tile_coords(x+12, y-12), rows.get()))
+                tile = ((x * 32, y * 32), alternator.get())
+                self.tiles[x].append(tile)
 
-    def render(self, screen, view):
+        self.view = (0, 0, width * 32, height * 32)
+
+    def move_view(self, x, y):
+        self.view = (self.view[0] + x, self.view[1] + y, self.view[2], self.view[3])
+        print self.view
+
+    def render(self, screen):
+        """
+        Renders the map to the screen
+        @param screen Surface
+        """
         if self.map is None:
             self.map = pygame.surface.Surface((1000,1000))
             self.map.convert()
 
             for rows in self.tiles:
                 for tile in rows:
-                    tile.render(self.map)
+                    self.map.blit(tile[1], tile[0])
 
-        screen.blit(self.map, (0, 0), view)
+        screen.blit(self.map, (0, 0), self.view)

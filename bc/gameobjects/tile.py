@@ -10,4 +10,4 @@ class Tile(object):
         self.tile_surface = tile_surface
 
     def render(self, surface):
-        self.tile_surface.render(surface, self.coords)
+        surface.blit(self.tile_surface, self.coords)

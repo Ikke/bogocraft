@@ -1,64 +1,54 @@
 import pygame
-import sys
-# pylint: disable-msg=W0401,W0614
-from pygame.locals import *
-# pylint: enable-msg=W0401,W0614
 import pygame.key
 import logging
 from bc.gameobjects.map import Map
-
+from bc.entities.player import Player
+from bc import graphics, input
 #from pgu import gui
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("main")
 
 class Game(object):
     def __init__(self, config):
         self.config = config
 
-    def init(self):
         pygame.init()
+
+        self.screen_size = (800, 600)
+
+        self.display = pygame.display.set_mode(self.screen_size)
+        pygame.display.set_caption(self.config['caption'])
 
         logger.debug("Displaymodes: %s" % pygame.display.list_modes(32))
         logger.debug("Displayinfo: %s" % pygame.display.Info())
 
-        self.surface = pygame.display.set_mode((800, 600))
-        pygame.display.set_caption(self.config['caption'])
+        self.map = Map(30, 30)
+        self.player = Player(self.screen_size, graphics.player, self.map)
 
-        gamemap = Map(100, 100)
+    def init(self):
+        clock = pygame.time.Clock()
+        changed = True
 
-        x = 0
-        y = 0
+        handler = input.Handler()
 
-        wait_factor = 1
+        handler.add_move_handler(self.player.move)
 
         while True:
             events = pygame.event.get()
             for event in events:
-                if event.type == QUIT or event.type == KEYUP and event.key == K_q:
+                if event.type == pygame.QUIT or event.type == pygame.KEYUP and event.key == pygame.K_q:
                     return
 
-            wait_factor += 1
-            action = False
+            handler.handle_input()
 
-            keys = pygame.key.get_pressed()
-            if keys[K_UP]:
-                y += 10
-                action = True
-            if keys[K_DOWN]:
-                y -= 10
-                action = True
+            self.map.render(self.display)
+            self.player.tick()
 
-            if keys[K_RIGHT]:
-                x -= 10
-                action = True
-            if keys[K_LEFT]:
-                x += 10
-                action = True
+            self.player.render(self.display)
 
-            wait_factor = 1 if action else wait_factor
+            if changed:
+                pygame.display.update()
+#                changed = False
+            clock.tick(60)
 
-            self.surface.fill(Color('#000000'))
-            gamemap.render(self.surface, (x, y, 800, 600))
-            pygame.display.update()
-            pygame.time.wait(min(25 * wait_factor, 150))
