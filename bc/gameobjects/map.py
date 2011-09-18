@@ -21,8 +21,8 @@ class Map(object):
         self.view = (0, 0, width * 32, height * 32)
 
     def move_view(self, x, y):
-        self.view = (self.view[0] + x, self.view[1] + y, self.view[2], self.view[3])
-        print self.view
+        self.view = (max(min(self.view[0] + x, 200), 0), max(min(self.view[1] + y, 400), 0), self.view[2], self.view[3])
+        #print self.view
 
     def render(self, screen):
         """
