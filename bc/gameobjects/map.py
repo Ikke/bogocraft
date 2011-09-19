@@ -1,40 +1,31 @@
 import logging
 import pygame.surface
-from bc import graphics
-from bc.utils.alternator import Alternator
+import pygame
+from bc import graphics, sprite
 
 logger = logging.getLogger('map')
 
 class Map(object):
-    def __init__(self, width, height):
-        self.tiles = []
-        self.map = None
+    def __init__(self, size = (60, 60), tile_size = (32, 32)):
 
-        alternator = Alternator(graphics.grass, graphics.dirt)
+        self.size = size
+        self.tile_size = tile_size
 
-        for x in range(0, width):
-            self.tiles.append([])
-            for y in range(0, height):
-                tile = ((x * 32, y * 32), alternator.get())
-                self.tiles[x].append(tile)
-
-        self.view = (0, 0, width * 32, height * 32)
+        self.view = (0, 0, self.size[0] * self.tile_size[0], self.size[1] * self.tile_size[1])
 
     def move_view(self, x, y):
-        self.view = (max(min(self.view[0] + x, 200), 0), max(min(self.view[1] + y, 400), 0), self.view[2], self.view[3])
+        self.view = (max(min(self.view[0] + x, 1920), 0), max(min(self.view[1] + y, 1920), 0), self.view[2], self.view[3])
         #print self.view
 
-    def render(self, screen):
-        """
-        Renders the map to the screen
-        @param screen Surface
-        """
-        if self.map is None:
-            self.map = pygame.surface.Surface((1000,1000))
-            self.map.convert()
 
-            for rows in self.tiles:
-                for tile in rows:
-                    self.map.blit(tile[1], tile[0])
+    def load_map(self, sprite_group):
+        #self.map = pygame.sprite.LayeredUpdates()
+        for k in range(0, self.size[0] * self.size[1]):
+            spr = sprite.Sprite(graphics.grass, (400 + k % self.size[0] * self.tile_size[0],
+                                                 300 + k // self.size[1] * self.tile_size[1]))
+            sprite_group.add(spr, layer=0)
 
-        screen.blit(self.map, (0, 0), self.view)
+        tree = sprite.Sprite(graphics.tree, (400, 500))
+        sprite_group.add(tree, layer=2)
+
+        return sprite_group
