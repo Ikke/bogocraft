@@ -2,6 +2,7 @@ import logging
 import pygame.surface
 import pygame
 from bc import graphics, sprite
+from bc.gameobjects.coordinates.tree import Tree
 
 logger = logging.getLogger('map')
 
@@ -24,7 +25,25 @@ class Map(object):
                                                  300 + k // self.size[1] * self.tile_size[1]))
             sprite_group.add(spr, layer=0)
 
-        tree = sprite.Sprite(graphics.tree, (400, 500))
-        sprite_group.add(tree, layer=2)
 
+        for k in range(100):
+            spr = sprite.Sprite(graphics.forrest, (600 + k % 10 * self.tile_size[0], 600 + k // 10 * self.tile_size[1]))
+            sprite_group.add(spr, layer=0)
+
+        trees = [
+            Tree((630, 687)),
+            Tree((750, 710)),
+            Tree((830, 790)),
+            Tree((630, 687)),
+            Tree((915, 841)),
+            Tree((601, 638)),
+            Tree((787, 957)),
+            Tree((840, 681)),
+            Tree((678, 900)),
+            Tree((716, 834))
+
+        ]
+        sprite_group.add(trees, layer=2)
+
+        self.collision_boxes = [spr.collision_box for spr in trees]
         return sprite_group

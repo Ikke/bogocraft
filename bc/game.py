@@ -30,10 +30,7 @@ class Game(object):
 
         sprites = bc.utils.sprite.LayeredDirty(_time_threshold = 500)
         self.map.load_map(sprites)
-
-        objects = sprites.get_sprites_from_layer(2)
-
-        player = Player(graphics.player, (384, 278), (400,300), objects)
+        player = Player(graphics.player, (384, 278), (400,300), self.map.collision_boxes)
         handler.add_move_handler(player.move)
         sprites.add(player, layer=5)
 
@@ -61,7 +58,7 @@ class Game(object):
             if changed:
                 pygame.display.update()
 #                changed = False
-#            clock.tick(60)
+            clock.tick(40)
 
             if not counter % 50:
                 print clock.get_fps()
