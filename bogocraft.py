@@ -1,7 +1,7 @@
 __author__ = 'ikke'
 
-import os
 import pygame
+import cProfile
 
 config = {
     'caption': "Bogocraft - V0.0.1"
@@ -16,4 +16,5 @@ pygame.display.set_caption(config['caption'])
 from bc.game import Game
 
 g = Game(display, config)
-g.run()
+#g.run()
+cProfile.run('g.run()', 'profile.out')

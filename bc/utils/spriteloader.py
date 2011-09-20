@@ -1,7 +1,5 @@
 import pygame
 from pygame.surface import Surface
-from pygame import sprite
-from bc.sprite import Sprite
 
 class SpriteLoader(object):
     def __init__(self, path, grid_size = (32, 32)):

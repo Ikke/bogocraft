@@ -19,7 +19,6 @@ class Map(object):
 
 
     def load_map(self, sprite_group):
-        #self.map = pygame.sprite.LayeredUpdates()
         for k in range(0, self.size[0] * self.size[1]):
             spr = sprite.Sprite(graphics.grass, (400 + k % self.size[0] * self.tile_size[0],
                                                  300 + k // self.size[1] * self.tile_size[1]))
