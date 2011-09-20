@@ -9,4 +9,4 @@ dirt = loader.get(1, 0)
 
 tree = loader.get(2,0,(2,2))
 
-player = [loader.get(0,2, (1, 2))] #, loader.get(1, 2, (1, 2))]
+player = [loader.get(0,4), loader.get(1,4)]
