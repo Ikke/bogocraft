@@ -21,25 +21,32 @@ class Player(Sprite):
 
         if d_y < 0:
             self.image = self.sprites[0]
-            self.dirty = 1
         if d_y > 0:
             self.image = self.sprites[1]
-            self.dirty = 1
+
+        new_x = min(max(new_x, 16), 1904)
+        new_y = min(max(new_y, 20), 1876)
+
+        collisions = self.get_collisions()
+        if len(collisions) > 0:
+            col_rect = collisions.pop(0).rect
+
+            if col_rect.collidepoint(self.rect.midleft):
+                new_x = col_rect.right - self.screen_position[0] - 1
+            elif col_rect.collidepoint(self.rect.midright):
+                new_x = col_rect.left - self.screen_position[0] - self.rect.width + 1
+            elif col_rect.collidepoint(self.rect.midbottom):
+                new_y = col_rect.top - self.screen_position[1] - self.rect.height + 1
+            elif col_rect.collidepoint(self.rect.midtop):
+                new_y = col_rect.bottom - self.screen_position[1] - 1
+
 
         self.set_position(new_x, new_y)
+        self.dirty = 1
 
-        if self.collides() or not self.in_map():
-            self.set_position(old_x, old_y)
-        else:
-            self.dirty = 1
 
-    def in_map(self):
-        x, y = self.position
-
-        return 16 < x < 1904 and 26 < y < 1876
-
-    def collides(self):
-        return len(bc.utils.sprite.spritecollide(self, self.collision_collection, False)) > 0
+    def get_collisions(self):
+        return bc.utils.sprite.spritecollide(self, self.collision_collection, False)
 
     def set_position(self, x, y):
         self.position = (x, y)

@@ -4,3 +4,8 @@ This will be a simple game to learn some of the basics of game programming and e
 be a mmorpg (yeah, yet another one).
 
 The goal of the game is collecting, gathering and crafting.
+
+# Requirements:
+
+* Python (2.6+)
+* PyGame (1.9.1)
