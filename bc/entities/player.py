@@ -29,19 +29,19 @@ class Player(Sprite):
 
         collisions = self.get_collisions()
         if len(collisions) > 0:
-            col_rect = collisions.pop(0).rect
-
-            if col_rect.collidepoint(self.rect.midleft):
-                new_x = col_rect.right - self.screen_position[0] - 1
-            elif col_rect.collidepoint(self.rect.midright):
-                new_x = col_rect.left - self.screen_position[0] - self.rect.width + 1
-            elif col_rect.collidepoint(self.rect.midbottom):
-                new_y = col_rect.top - self.screen_position[1] - self.rect.height + 1
-            elif col_rect.collidepoint(self.rect.midtop):
-                new_y = col_rect.bottom - self.screen_position[1] - 1
-
+            for i, collision in enumerate(collisions):
+                rect = collision.rect
+                if rect.collidepoint(self.rect.midleft):
+                    new_x = rect.right - self.screen_position[0]
+                elif rect.collidepoint(self.rect.midright):
+                    new_x = rect.left - self.screen_position[0] - self.rect.width
+                elif rect.collidepoint(self.rect.midbottom):
+                    new_y = rect.top - self.screen_position[1] - self.rect.height
+                elif rect.collidepoint(self.rect.midtop):
+                    new_y = rect.bottom - self.screen_position[1]
 
         self.set_position(new_x, new_y)
+
         self.dirty = 1
 
 
