@@ -2,7 +2,7 @@ import logging
 import pygame.surface
 import pygame
 from bc import graphics, sprite
-from bc.gameobjects.coordinates.tree import Tree
+from bc.gameobjects.tree import Tree
 
 logger = logging.getLogger('map')
 
