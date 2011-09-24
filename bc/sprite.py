@@ -15,7 +15,7 @@ class Sprite(bc.utils.sprite.DirtySprite):
             collision_box.rect.move_ip(*position)
             self.collision_box = collision_box
         else:
-            self.collision_box = Collision_Box(self.rect)
+            self.collision_box = Collision_Box(self.rect, self)
 
 
 
