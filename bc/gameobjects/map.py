@@ -3,6 +3,7 @@ import pygame.surface
 import pygame
 from bc import graphics, sprite
 from bc.gameobjects.tree import Tree
+from bc.gameobjects.log import Log
 
 logger = logging.getLogger('map')
 
@@ -40,8 +41,8 @@ class Map(object):
             Tree((787, 957)),
             Tree((840, 681)),
             Tree((678, 900)),
-            Tree((716, 834))
-
+            Tree((716, 834)),
+            Log((800, 800))
         ]
         sprite_group.add(trees, layer=2)
 
