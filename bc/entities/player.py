@@ -1,6 +1,6 @@
+from pygame.rect import Rect
 from bc.sprite import Sprite
-from bc.utils.alternator import Alternator
-from entity import Entity
+from bc.utils.collision_box import Collision_Box
 import bc.utils.sprite
 
 
@@ -44,6 +44,12 @@ class Player(Sprite):
 
         self.dirty = 1
 
+    def action(self, pos):
+        rect = Collision_Box(Rect(self.position[0] + pos[0], self.position[1] + pos[1], 1, 1), None)
+
+        objs = bc.utils.sprite.spritecollide(rect, self.collision_collection, False)
+        if len(objs) > 0:
+            objs[0].sprite.action()
 
     def get_collisions(self):
         return bc.utils.sprite.spritecollide(self, self.collision_collection, False)

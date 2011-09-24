@@ -19,6 +19,8 @@ class Game(object):
         pygame.init()
 
         self.screen_size = (800, 600)
+        self.player_position_on_screen = (384, 278)
+        self.player_position_in_game = (16, 20)
 
         self.map = Map()
 
@@ -30,8 +32,9 @@ class Game(object):
 
         sprites = bc.utils.sprite.LayeredDirty(_time_threshold = 500)
         self.map.load_map(sprites)
-        player = Player(graphics.player, (384, 278), (400,300), self.map.collision_boxes)
+        player = Player(graphics.player, self.player_position_on_screen, self.player_position_in_game, self.map.collision_boxes)
         handler.add_move_handler(player.move)
+        handler.add_action_handler(player.action)
         sprites.add(player, layer=5)
 
         level = pygame.Surface((60*32+800, 60*32+600)).convert()
@@ -58,7 +61,7 @@ class Game(object):
             if changed:
                 pygame.display.update()
 #                changed = False
-            clock.tick(40)
+            clock.tick(60)
 
             if not counter % 50:
                 print clock.get_fps()

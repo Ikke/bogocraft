@@ -44,7 +44,7 @@ class Map(object):
             Tree((716, 834)),
             Log((800, 800))
         ]
-        sprite_group.add(trees, layer=2)
+        sprite_group.add(trees, layer=5)
 
         self.collision_boxes = [spr.collision_box for spr in trees]
         return sprite_group
