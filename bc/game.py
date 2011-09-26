@@ -48,7 +48,6 @@ class Game(object):
 
     def run(self):
         clock = pygame.time.Clock()
-        changed = True
 
         player = self.player
 
@@ -67,9 +66,8 @@ class Game(object):
 
             self.display.blit(self.level, (0,0), (player.position[0], player.position[1], 800, 600))
 
-            if changed:
-                pygame.display.update()
-#                changed = False
+            pygame.display.update()
+
             clock.tick(60)
 
             if not counter % 50:
