@@ -49,14 +49,17 @@ class Player(Sprite):
     def action(self, pos):
         rect = Collision_Box(Rect(self.position[0] + pos[0], self.position[1] + pos[1], 1, 1), None)
 
-        objs = bc.utils.sprite.spritecollide(rect, self.collision_collection, False)
-        if len(objs) > 0:
-            objs[0].sprite.action()
+        collided_objects = bc.utils.sprite.spritecollide(rect, self.collision_collection, False)
+        if len(collided_objects) > 0:
+            collided_objects[0].sprite.action()
 
     def get_collisions(self):
         return bc.utils.sprite.spritecollide(self, self.collision_collection, False)
 
     def set_position(self, x, y):
         self.position = (x, y)
-        self.rect.left = self.screen_position[0] + x
-        self.rect.top = self.screen_position[1] + y
+
+        self.rect = Rect((self.screen_position[0] + x, self.screen_position[1] + y), self.rect.size)
+
+    def __repr__(self):
+        return "<Player %s object (%s, %s)>" % (self.__class__.__name__, self.position[0], self.position[1])
