@@ -27,20 +27,22 @@ class Player(Sprite):
         new_x = min(max(new_x, 16), 1904)
         new_y = min(max(new_y, 20), 1876)
 
+        self.set_position(new_x, new_y)
+
         collisions = self.get_collisions()
         if len(collisions) > 0:
             for i, collision in enumerate(collisions):
                 rect = collision.rect
                 if rect.collidepoint(self.rect.midleft):
                     new_x = rect.right - self.screen_position[0]
-                elif rect.collidepoint(self.rect.midright):
+                if rect.collidepoint(self.rect.midright):
                     new_x = rect.left - self.screen_position[0] - self.rect.width
-                elif rect.collidepoint(self.rect.midbottom):
+                if rect.collidepoint(self.rect.midbottom):
                     new_y = rect.top - self.screen_position[1] - self.rect.height
-                elif rect.collidepoint(self.rect.midtop):
+                if rect.collidepoint(self.rect.midtop):
                     new_y = rect.bottom - self.screen_position[1]
 
-        self.set_position(new_x, new_y)
+            self.set_position(new_x, new_y)
 
         self.dirty = 1
 
