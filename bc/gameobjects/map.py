@@ -28,7 +28,8 @@ class Map(object):
 
 
         for k in range(100):
-            spr = sprite.Sprite(graphics.forrest, (600 + k % 10 * self.tile_size[0], 600 + k // 10 * self.tile_size[1]))
+            spr = sprite.Sprite(graphics.forrest, (592 + k % 10 * self.tile_size[0],
+                                                   620 + k // 10 * self.tile_size[1]))
             sprite_group.add(spr, layer=0)
 
         trees = [

@@ -53,7 +53,6 @@ class Game(object):
 
         counter = 0
         while True:
-#        for i in range(5):
             counter +=1
 
             events = pygame.event.get()
