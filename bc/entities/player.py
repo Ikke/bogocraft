@@ -7,7 +7,7 @@ import bc.utils.sprite
 class Player(Sprite):
     def __init__(self, sprites, screen_position, position, collision_collection):
         final_position = (screen_position[0] + position[0], screen_position[1] + position[1])
-        super(Player, self).__init__(sprites[0], final_position)
+        super(Player, self).__init__(sprites[0], final_position, Collision_Box(Rect(2, 23, 28, 8), self))
 
         self.sprites = sprites
 
