@@ -23,7 +23,7 @@ class Game(object):
         self.player_position_in_game = (16, 20)
 
         self.input_handler = input.Handler()
-        self.sprites = bc.utils.sprite.LayeredDirty(_time_threshold = 500)
+        self.sprites = bc.utils.sprite.LayeredDirtyPosition(_time_threshold = 500)
 
         self.map = Map()
         self.load_map(self.map, self.sprites)
@@ -43,7 +43,7 @@ class Game(object):
     def initialize_player(self, player):
         self.input_handler.add_move_handler(player.move)
         self.input_handler.add_action_handler(player.action)
-        self.sprites.add(player, layer=5)
+        self.sprites.add_movable_object(player, layer=5)
 
 
     def run(self):
