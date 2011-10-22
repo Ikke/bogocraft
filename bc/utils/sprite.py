@@ -1076,10 +1076,97 @@ class LayeredDirty(LayeredUpdates):
         """
         self._time_threshold = time_ms
 
+class LayeredDirtyPosition(LayeredDirty):
+
+    def __init__(self, *sprites, **kwargs):
+        super(LayeredDirtyPosition, self).__init__(*sprites, **kwargs)
+        self.movable_objects = []
+
+    def draw(self, surface, bgd=None):
+        self.sort_movable_objects()
+        super(LayeredDirtyPosition, self).draw(surface, bgd)
+
+    def add_movable_object(self, sprite, layer=None):
+        self.movable_objects.append(sprite)
+        self.add_internal(sprite, layer)
+
+    def add_internal(self, sprite, layer=None):
+        """
+        Do not use this method directly. It is used by the group to add a
+        sprite internally.
+        """
+        self.spritedict[sprite] = Rect(0, 0, 0, 0) # add a old rect
+
+        if layer is None:
+            try:
+                layer = sprite._layer
+            except AttributeError:
+                layer = self._default_layer
 
 
+        self._spritelayers[sprite] = layer
+        if hasattr(sprite, '_layer'):
+            sprite._layer = layer
 
+        # add the sprite at the right position
+        position = self._find_insert_position(sprite, layer)
+        self._spritelist.insert(position, sprite)
 
+    def _find_insert_position(self, sprite, layer):
+        # bisect algorithmus
+        sprites = self._spritelist # speedup
+        length = len(sprites)
+        low = 0
+        high = length-1
+        mid = low
+        while low<=high:
+            mid = low + (high-low)//2
+            if sprites[mid]._layer <= layer:
+                low = mid+1
+            else:
+                high = mid-1
+
+        if length > 0:
+            if sprites[mid]._layer != layer:
+                mid = length
+            else:
+                if sprite.rect.centery < sprites[mid].rect.centery:
+                    while mid > 1 and sprite.rect.centery < sprites[mid].rect.centery and sprites[mid]._layer == layer:
+                        mid -= 1
+                else:
+                    while mid < length and sprite.rect.centery > sprites[mid].rect.centery and sprites[mid]._layer == layer:
+                        mid += 1
+
+        return mid
+
+    def sort_movable_objects(self):
+
+        if len(self.movable_objects) > 0:
+
+            for object in self.movable_objects:
+                self._spritelist.remove(object)
+
+            sorted_list = sorted(self.movable_objects, key=lambda x: x.rect.bottom)
+
+            pos = 0
+
+            while self._spritelist[pos]._layer != 5:
+                pos += 1
+
+            nr_of_objects = len(sorted_list)
+            current_index = 0
+
+            while current_index < nr_of_objects:
+                current_sprite = self._spritelist[pos]
+                if sorted_list[current_index].rect.bottom < current_sprite.rect.bottom:
+                    self._spritelist.insert(pos, sorted_list[current_index])
+                    current_index += 1
+
+                if pos < len(self._spritelist) - 1:
+                    pos += 1
+                else:
+                    self._spritelist.append(sorted_list[current_index])
+                    current_index += 1
 
 
 class GroupSingle(AbstractGroup):
