@@ -3,9 +3,11 @@ from bc.utils.collision_box import Collision_Box
 import bc.utils.sprite
 
 class Sprite(bc.utils.sprite.DirtySprite):
-    def __init__(self, image, position, collision_box = None):
+    def __init__(self, image, position, collides = False, collision_box = None):
         super(Sprite, self).__init__()
         self.image = image
+        self.level = None
+        self.collides = collides
         self.rect = pygame.Rect(0,0,0,0)
 
         _, _, width, height = self.image.get_rect()

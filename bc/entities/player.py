@@ -5,15 +5,15 @@ import bc.utils.sprite
 
 
 class Player(Sprite):
-    def __init__(self, sprites, screen_position, position, collision_collection):
+    def __init__(self, sprites, screen_position, position):
         final_position = (screen_position[0] + position[0], screen_position[1] + position[1])
-        super(Player, self).__init__(sprites[0], final_position, Collision_Box(Rect(2, 15, 28, 16), self))
+        super(Player, self).__init__(sprites[0], final_position, True, Collision_Box(Rect(2, 15, 28, 16), self))
 
         self.sprites = sprites
 
+        self.collision_collection = []
         self.screen_position = screen_position
         self.position = position
-        self.collision_collection = collision_collection
 
     def move(self, d_x, d_y):
         old_x, old_y = self.position
@@ -51,9 +51,19 @@ class Player(Sprite):
     def action(self, pos):
         rect = Collision_Box(Rect(self.position[0] + pos[0], self.position[1] + pos[1], 1, 1), None)
 
-        collided_objects = bc.utils.sprite.spritecollide(rect, self.collision_collection, False)
+        collision_objects = [obj.sprite for obj in self.collision_collection]
+
+        collided_objects = bc.utils.sprite.spritecollide(rect, collision_objects, False)
         if len(collided_objects) > 0:
-            collided_objects[0].sprite.action()
+            collided_objects[0].action()
+
+    def sprite_added(self, sprite):
+        if sprite.collides:
+            self.collision_collection.append(sprite.collision_box)
+
+    def sprite_removed(self, sprite):
+        if sprite.collides and sprite.collision_box in self.collision_collection:
+            self.collision_collection.remove(sprite.collision_box)
 
     def get_collisions(self):
         return bc.utils.sprite.spritecollide(self, self.collision_collection, False)

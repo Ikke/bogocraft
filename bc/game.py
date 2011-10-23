@@ -25,20 +25,24 @@ class Game(object):
         self.input_handler = input.Handler()
         self.sprites = bc.utils.sprite.LayeredDirtyPosition(_time_threshold = 500)
 
-        self.map = Map()
-        self.load_map(self.map, self.sprites)
+        self.player = Player(graphics.player, self.player_position_on_screen, self.player_position_in_game)
 
-        self.player = Player(graphics.player, self.player_position_on_screen, self.player_position_in_game, self.map.collision_boxes)
+        self.map = self.load_map(self.sprites, self.player)
+
         self.initialize_player(self.player)
 
 
-    def load_map(self, map, sprites):
-        map.load_map(self.sprites)
+    def load_map(self, sprites, player):
+        map = Map(sprites)
+        map.add_entity_added_handler(player.sprite_added)
+        map.load_map()
+
         self.level = pygame.Surface((60*32+800, 60*32+600)).convert()
 
         sprites.draw(self.level)
         sprites._use_update = True
 
+        return map
 
     def initialize_player(self, player):
         self.input_handler.add_move_handler(player.move)
