@@ -35,6 +35,7 @@ class Game(object):
     def load_map(self, sprites, player):
         map = Map(sprites)
         map.add_entity_added_handler(player.sprite_added)
+        map.add_entity_removed_handler(player.sprite_removed)
         map.load_map()
 
         self.level = pygame.Surface((60*32+800, 60*32+600)).convert()

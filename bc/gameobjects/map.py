@@ -47,12 +47,12 @@ class Map(object):
             Log((800, 800))
         ]
         for entity in sprites:
-            self.add_entity(entity, 5)
+            self.add_entity(entity)
 
         #self.collision_boxes = [spr.collision_box for spr in sprites]
         return sprites
 
-    def add_entity(self, entity, layer):
+    def add_entity(self, entity, layer = 5):
         entity.level = self
         self.sprites.add(entity, layer=layer)
 
