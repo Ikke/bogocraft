@@ -18,7 +18,7 @@ config = {
 #os.environ['SDL_VIDEO_CENTERED'] = '1'
 
 pygame.init()
-display = pygame.display.set_mode((800, 600))
+display = pygame.display.set_mode((1000, 650))
 pygame.display.set_caption(config['caption'])
 
 from bc.game import Game

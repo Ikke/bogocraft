@@ -50,6 +50,28 @@ class Game(object):
         self.sprites.add_movable_object(player, layer=5)
 
 
+    def draw_interface(self):
+        border_color = (90, 40, 1)
+        interface_color = (100, 100, 100)
+        background_color = (22, 22, 22)
+
+        self.display.fill(background_color)
+
+        pygame.draw.line(self.display, border_color, (800, 0), (800, 600))
+        pygame.draw.line(self.display, border_color, (0, 600), (800, 600))
+
+        pygame.draw.rect(self.display, interface_color, (150, 605, 40, 40), 1)
+        pygame.draw.rect(self.display, interface_color, (192, 605, 40, 40), 1)
+        pygame.draw.rect(self.display, interface_color, (234, 605, 40, 40), 1)
+        pygame.draw.rect(self.display, interface_color, (276, 605, 40, 40), 1)
+        pygame.draw.rect(self.display, interface_color, (318, 605, 40, 40), 1)
+        pygame.draw.rect(self.display, interface_color, (360, 605, 40, 40), 1)
+        pygame.draw.rect(self.display, interface_color, (402, 605, 40, 40), 1)
+        pygame.draw.rect(self.display, interface_color, (444, 605, 40, 40), 1)
+        pygame.draw.rect(self.display, interface_color, (486, 605, 40, 40), 1)
+
+
+
     def run(self):
         clock = pygame.time.Clock()
 
@@ -66,6 +88,8 @@ class Game(object):
 
             self.input_handler.handle_input()
             self.sprites.draw(self.level)
+
+            self.draw_interface()
 
             self.display.blit(self.level, (0,0), (player.position[0], player.position[1], 800, 600))
 
