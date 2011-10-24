@@ -14,6 +14,7 @@ class Map(object):
 
         self.view = (0, 0, self.size[0] * self.tile_size[0], self.size[1] * self.tile_size[1])
         self.entity_added_handlers = []
+        self.entity_removed_handlers = []
 
     def move_view(self, x, y):
         self.view = (max(min(self.view[0] + x, 1920), 0), max(min(self.view[1] + y, 1920), 0), self.view[2], self.view[3])
@@ -59,6 +60,11 @@ class Map(object):
 
     def remove_entity(self, entity):
         self.sprites.remove(entity)
+        self.entity_removed(entity)
+
+    def entity_removed(self, entity):
+        for handler in self.entity_removed_handlers:
+            handler(entity)
 
     def entity_added(self, entity):
         for handler in self.entity_added_handlers:
@@ -66,5 +72,8 @@ class Map(object):
 
     def add_entity_added_handler(self, handler):
         self.entity_added_handlers.append(handler)
+
+    def add_entity_removed_handler(self, handler):
+        self.entity_removed_handlers.append(handler)
 
 
