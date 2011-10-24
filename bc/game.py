@@ -26,7 +26,6 @@ class Game(object):
         self.sprites = bc.utils.sprite.LayeredDirtyPosition(_time_threshold = 500)
 
         self.player = Player(graphics.player, self.player_position_on_screen, self.player_position_in_game)
-
         self.map = self.load_map(self.sprites, self.player)
 
         self.initialize_player(self.player)

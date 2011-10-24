@@ -25,7 +25,7 @@ from bc.game import Game
 
 g = Game(display, config)
 
-if args.profile == False:
+if not args.profile:
     cProfile.run('g.run()', args.profile or "profile.out")
 else:
     g.run()

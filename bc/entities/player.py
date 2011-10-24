@@ -33,7 +33,7 @@ class Player(Sprite):
 
         collisions = self.get_collisions()
         if len(collisions) > 0:
-            for i, collision in enumerate(collisions):
+            for collision in collisions:
                 rect = collision.rect
                 if rect.collidepoint(collision_rectangle.midleft):
                     new_x = rect.right - self.screen_position[0]
