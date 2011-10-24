@@ -1,5 +1,5 @@
 from pygame.rect import Rect
-from bc import graphics
+from bc import graphics, sounds
 from bc.gameobjects.log import Log
 from bc.sprite import Sprite
 from bc.utils.collision_box import Collision_Box
@@ -11,6 +11,10 @@ class Tree(Sprite):
 
     def action(self):
         self.health -= 1
+
+        if not self.health % 20:
+            sounds.chop.play()
+
         if not self.health:
             self.level.remove_entity(self)
 
