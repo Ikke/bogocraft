@@ -27,7 +27,7 @@ class Handler(object):
 
             distance = int(math.sqrt(abs(pos[0] - self.center[0]) ** 2 + abs(pos[1] - self.center[1]) ** 2))
 
-            if distance < 100:
+            if distance < 50:
                 for h in self.action_handlers:
                     h(pos)
         else:
